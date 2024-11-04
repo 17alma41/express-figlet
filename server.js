@@ -1,9 +1,15 @@
 const express = require('express')
-const app = express()
-const port = 3000
+const { exec } = require('child_process')
+//const figlet = require('figlet')
 
-app.get("/", (res, req) => {
-    res.send("Hola Mundo")
+const comando = 'echo "hola mundo" > hola.txt'
+const app = express()
+const port = 8000
+
+app.get("/", (req, res) => {
+    exec(comando, (error, stdout, stderr) =>{
+        res.send(stdout)
+    });
 })
 
 app.listen(port, () => {
