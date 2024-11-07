@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Index</title>
+    <title>Texto y Fuente</title>
 </head>
 <body>
-    <form id="texto" action="http://localhost:8000/figlet" method="GET">
+    <form>
         <label for="texto">Texto:</label>
         <input type="text" id="texto" name="texto" required>
         <label for="fuente">Fuente:</label>
@@ -18,9 +18,12 @@
     <pre id="respuesta"></pre>
     
     <script>
+
+        const respuesta = document.getElementById("respuesta");
+
         // Función para cargar las fuentes en el select
         function cargarFuentes() {
-            fetch('http://localhost:8000/fuentes')
+            fetch('/fuentes')
                 .then(response => response.json())
                 .then(data => {
                     const selectFuente = document.getElementById('fuente');
@@ -40,26 +43,28 @@
                 });
         }
 
-        /*
+        // Llamamos a la función para cargar las fuentes al cargar la página
+        window.onload = cargarFuentes;
+
+        
         document.querySelector('form').addEventListener('submit',
         (e) =>{
 
             //Quita el evento por defecto del formulario (action y method)
 
             e.preventDefault(); 
-            const formData = new FormData(form)
-            //const text = formData.get('texto');
+            
+            const formData = new FormData(document.querySelector('form'))
+            const text = formData.get('texto');
             const font = formData.get('fuente');
-            fetch(`/figlet?texto=${texto}&fuente=${fuente}`)
+            
+            fetch(`/figlet?texto=${text}&fuente=${font}`)
             .then(response => response.text())
             .then(data => {
-                respuesta.textContent = data
-            })
+                respuesta.textContent = data;
+            });
         })
-        */
-
-        // Llamamos a la función para cargar las fuentes al cargar la página
-        window.onload = cargarFuentes;
+        
     </script>
 </body>
 </html>

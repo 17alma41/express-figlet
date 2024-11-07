@@ -45,7 +45,7 @@ app.get("/figlet", (req, res) =>{
             return;
           }
           //console.log(data);
-          res.send(`<pre>${data}</pre>`)
+          res.send(data)
         }
     );
 
