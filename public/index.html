@@ -15,7 +15,7 @@
         </select>
         <button type="submit">Generar</button>
     </form>
-    <p id="respuesta"></p>
+    <pre id="respuesta"></pre>
     
     <script>
         // Función para cargar las fuentes en el select
@@ -39,6 +39,24 @@
                     console.error('Error al cargar las fuentes:', error);
                 });
         }
+
+        /*
+        document.querySelector('form').addEventListener('submit',
+        (e) =>{
+
+            //Quita el evento por defecto del formulario (action y method)
+
+            e.preventDefault(); 
+            const formData = new FormData(form)
+            //const text = formData.get('texto');
+            const font = formData.get('fuente');
+            fetch(`/figlet?texto=${texto}&fuente=${fuente}`)
+            .then(response => response.text())
+            .then(data => {
+                respuesta.textContent = data
+            })
+        })
+        */
 
         // Llamamos a la función para cargar las fuentes al cargar la página
         window.onload = cargarFuentes;
