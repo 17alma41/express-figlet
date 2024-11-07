@@ -3,36 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Index</title>
 </head>
 <body>
-    <h1>Hola mundo</h1>
-
-    <h2>Ping</h2>
-    <form id="pingForm" action="http://localhost:3000/ping" method="GET">
-        <label for="dominio">Dominio:</label>
-        <input type="text" id="dominio" name="dominio" required>
-        <button type="submit">Enviar</button>
+    <form id="texto" action="http://localhost:8000/figlet" method="GET">
+        <label for="texto">Texto:</label>
+        <input type="text" id="texto" name="texto" required>
+        <label for="fuente">Fuente:</label>
+        <select id="fuente" name="fuente">
+            <!-- Las opciones de fuentes se llenarán automáticamente con JavaScript -->
+        </select>
+        <button type="submit">Generar</button>
     </form>
     <p id="respuesta"></p>
-
+    
     <script>
-        document.getElementById('pingForm').onsubmit = function(event) {
-            event.preventDefault(); // Evita el envío del formulario por defecto
-            const dominio = document.getElementById('dominio').value;
-            const url = `http://localhost:8000/ping?dominio=${encodeURIComponent(dominio)}`;
-
-            fetch(url)
-                .then(response => response.text()) // Cambiado a text() para obtener texto plano
+        // Función para cargar las fuentes en el select
+        function cargarFuentes() {
+            fetch('http://localhost:8000/fuentes')
+                .then(response => response.json())
                 .then(data => {
-                    console.log(data)
-                    document.getElementById('respuesta').innerText = 'Respuesta: ' + data; // Mostrar la respuesta
+                    const selectFuente = document.getElementById('fuente');
+                    // Limpiar el select antes de añadir nuevas opciones
+                    selectFuente.innerHTML = '';
+
+                    // Agregar cada fuente como opción en el select
+                    data.forEach(fuente => {
+                        const option = document.createElement('option');
+                        option.value = fuente;
+                        option.textContent = fuente;
+                        selectFuente.appendChild(option);
+                    });
                 })
                 .catch(error => {
-                    console.error('Error:', error);
-                    alert('Hubo un error al realizar la solicitud.');
+                    console.error('Error al cargar las fuentes:', error);
                 });
-        };
+        }
+
+        // Llamamos a la función para cargar las fuentes al cargar la página
+        window.onload = cargarFuentes;
     </script>
 </body>
 </html>

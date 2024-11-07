@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dominio</title>
+</head>
+<body>
+    <h1>Hola mundo</h1>
+
+    <h2>Ping</h2>
+    <form id="pingForm" action="http://localhost:3000/ping" method="GET">
+        <label for="dominio">Dominio:</label>
+        <input type="text" id="dominio" name="dominio" required>
+        <button type="submit">Enviar</button>
+    </form>
+    <p id="respuesta"></p>
+
+    <script>
+        document.getElementById('pingForm').onsubmit = function(event) {
+            event.preventDefault(); // Evita el envío del formulario por defecto
+            const dominio = document.getElementById('dominio').value;
+            const url = `http://localhost:8000/ping?dominio=${encodeURIComponent(dominio)}`;
+
+            fetch(url)
+                .then(response => response.text()) // Cambiado a text() para obtener texto plano
+                .then(data => {
+                    console.log(data)
+                    document.getElementById('respuesta').innerText = 'Respuesta: ' + data; // Mostrar la respuesta
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Hubo un error al realizar la solicitud.');
+                });
+        };
+    </script>
+</body>
+</html>

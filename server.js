@@ -1,6 +1,6 @@
 const express = require('express')
 const { exec } = require('child_process')
-//const figlet = require('figlet')
+const figlet = require('figlet')
 
 //const comando = 'echo "hola mundo" > hola.txt'
 
@@ -24,7 +24,45 @@ app.get("/ping", (req, res) => {
     });
 })
 
+//Obtenemos el texto con figlet
+app.get("/figlet", (req, res) =>{
+    const texto = req.query.texto
+    const fuentes = req.query.fuente
 
+    figlet.text(
+        `${texto}`,
+        {
+          font: fuentes,
+          horizontalLayout: "default",
+          verticalLayout: "default",
+          width: 80,
+          whitespaceBreak: true,
+        },
+        function (err, data) {
+          if (err) {
+            console.log("Something went wrong...");
+            console.dir(err);
+            return;
+          }
+          //console.log(data);
+          res.send(`<pre>${data}</pre>`)
+        }
+    );
+
+})
+
+//Obtenemos el JSON de las fuentes
+app.get("/fuentes", (req, res) => {
+    figlet.fonts(function (err, fonts) {
+        if (err) {
+          console.log("something went wrong...");
+          console.dir(err);
+          return;
+        }
+        console.dir(fonts);
+        res.json(fonts)
+    });
+})
 
 app.listen(port, () => {
     console.log(`Servidor iniciado en http://localhost:${port}`)
