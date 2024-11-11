@@ -91,7 +91,6 @@ app.get("/fuentes", (req, res) => {
           console.dir(err);
           return;
         }
-        console.dir(fonts);
         res.json(fonts)
     });
 })
